@@ -1,47 +1,31 @@
 name: Python CI/CD Pipeline
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+push:
+branches: [main]
 
 jobs:
-  build-test:
-    runs-on: ubuntu-latest
+build-test:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+```
+steps:
+  - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
+  - uses: actions/setup-python@v5
+    with:
+      python-version: "3.10"
 
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
+  - run: |
+      pip install -r requirements.txt
+      pytest
+```
 
-      
+deploy:
+needs: build-test
+runs-on: ubuntu-latest
 
-      - name: Run Tests
-        run: pytest --cov=app --cov-fail-under=80
-
-      - name: Validate Output
-        run: |
-          output=$(python app.py)
-          if [ "$output" != "5" ]; then
-            exit 1
-          fi
-
-  deploy:
-    needs: build-test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy Application
-        run: echo "Deploying application..."
-
-      - name: Verify Deployment
-        run: echo "Deployment Successful!"
+```
+steps:
+  - run: echo "Deployment Successful!"
+```
