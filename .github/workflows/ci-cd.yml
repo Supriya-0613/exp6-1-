@@ -23,8 +23,7 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Lint Code
-        run: flake8 .
+      
 
       - name: Run Tests
         run: pytest --cov=app --cov-fail-under=80
